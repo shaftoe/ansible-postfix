@@ -1,0 +1,9 @@
+---
+galaxy_info:
+    role_name: postfix
+    author: Alexander Fortin
+    company: BiffCo Ltd
+    license: GPLv2
+    platforms:
+        - name: Debian
+          versions: all
