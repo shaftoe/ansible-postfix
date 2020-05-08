@@ -1,0 +1,10 @@
+append_dot_mydomain = no
+canonical_maps = static:{{ ansible_hostname }}
+compatibility_level = 2
+header_checks = regexp:/etc/postfix/reply_to_header
+inet_interfaces = loopback-only
+mydestination =
+myhostname = {{ ansible_fqdn }}
+mynetworks = 127.0.0.0/8 [::1]/128
+myorigin = {{ ansible_domain }}
+readme_directory = no

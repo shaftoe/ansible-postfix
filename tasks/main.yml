@@ -1,0 +1,23 @@
+---
+- name: install server packages
+  apt:
+    name: postfix
+    cache_valid_time: 3600
+
+- name: postfix reply_to_header map
+  copy:
+    dest: /etc/postfix/reply_to_header
+    content: "/^Content-Transfer-Encoding:/i PREPEND Reply-to: {{ default_email }}\n"
+  notify: restart postfix
+
+- name: postfix main config file
+  template:
+    dest: /etc/postfix/main.cf
+    src: main.cf
+  notify: restart postfix
+
+- name: keep postfix running
+  service:
+    name: postfix
+    state: started
+    enabled: true
