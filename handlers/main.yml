@@ -1,4 +1,8 @@
 ---
+- name: postmap sasl_passwd
+  command: postmap /etc/postfix/sasl/passwd
+  when: postfix_relayhost_fqdn is defined
+
 - name: restart postfix
   service:
     name: postfix

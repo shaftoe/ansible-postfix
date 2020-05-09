@@ -1,8 +1,21 @@
 ---
 - name: install server packages
   apt:
-    name: postfix
+    name: "{{ packages }}"
     cache_valid_time: 3600
+  vars:
+    packages:
+    - postfix
+    - libsasl2-modules
+  notify: restart postfix
+
+- name: postfix relayhost credentials
+  copy:
+    dest:  /etc/postfix/sasl/passwd
+    content: "[{{ postfix_relayhost_fqdn }}]:{{ postfix_relayhost_port }} {{ postfix_relayhost_username }}:{{ postfix_relayhost_password }}\n"
+    mode: '0400'
+  notify: postmap sasl_passwd
+  when: postfix_relayhost_fqdn is defined
 
 - name: postfix reply_to_header map
   copy:

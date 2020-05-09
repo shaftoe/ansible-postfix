@@ -1,10 +1,18 @@
-append_dot_mydomain = no
-canonical_maps = static:{{ ansible_hostname }}
 compatibility_level = 2
 header_checks = regexp:/etc/postfix/reply_to_header
 inet_interfaces = loopback-only
+masquerade_domains = {{ ansible_domain }}
 mydestination =
 myhostname = {{ ansible_fqdn }}
 mynetworks = 127.0.0.0/8 [::1]/128
 myorigin = {{ ansible_domain }}
-readme_directory = no
+{% if postfix_relayhost_fqdn is defined %}
+relayhost = [{{ postfix_relayhost_fqdn }}]:{{ postfix_relayhost_port }}
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl/passwd
+smtp_sender_dependent_authentication = yes
+smtp_use_tls = yes
+{% endif %}
+recipient_canonical_maps = static:{{ default_email }}
+sender_canonical_maps = static:{{ ansible_hostname }}
